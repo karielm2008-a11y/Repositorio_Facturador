@@ -412,7 +412,7 @@ st.markdown("""
 st.markdown("""
 <div class="hero">
     <h1>🧾 Validador de Facturas SRI</h1>
-    <p>Consulta comprobantes electrónicos autorizados por el SRI y genera una vista limpia de la factura o nota de crédito.</p>
+    <p>Consulta comprobantes electrónicos autorizados por el SRI 🧐.</p>
     <p class="creator">Creado por Kevin Muñoz A.</p>
 </div>
 """, unsafe_allow_html=True)
