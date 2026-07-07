@@ -446,17 +446,58 @@ if st.button("🔍 Consultar comprobante", use_container_width=True):
 
                 nombre_base = f"{datos['tipo_comprobante'].replace(' ', '_')}_{datos['establecimiento']}-{datos['punto_emision']}-{datos['secuencial']}"
 
-                st.markdown("""
-                <div class="ok-box">
-                    ✅ Comprobante autorizado y validado correctamente.
-                </div>
-                """, unsafe_allow_html=True)
+numero = f"{datos['establecimiento']}-{datos['punto_emision']}-{datos['secuencial']}"
 
-                c1, c2, c3, c4 = st.columns(4)
-                c1.metric("Estado SRI", autorizacion["estado"])
-                c2.metric("Tipo", datos["tipo_comprobante"])
-                c3.metric("No.", f"{datos['establecimiento']}-{datos['punto_emision']}-{datos['secuencial']}")
-                c4.metric("Total", datos["importe_total"])
+st.markdown(f"""
+<div style="
+background:linear-gradient(90deg,#f5fffb,#ffffff);
+border:1px solid #b7eacb;
+border-radius:12px;
+overflow:hidden;
+margin-top:15px;
+margin-bottom:25px;
+">
+
+<div style="
+padding:14px 20px;
+border-bottom:1px solid #e8ecef;
+display:flex;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:26px;
+height:26px;
+background:#22c55e;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:14px;
+font-weight:bold;
+">
+✓
+</div>
+
+<div style="
+color:#15803d;
+font-size:15px;
+font-weight:600;
+">
+Comprobante autorizado y validado correctamente.
+</div>
+
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(4,1fr);
+">
+
+<div style="padding:16px 22px;">
+<div style="font-size:
 
                 st.markdown("### Datos principales")
 
