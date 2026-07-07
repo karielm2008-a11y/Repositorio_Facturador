@@ -1,0 +1,5 @@
+streamlit
+requests
+zeep
+jinja2
+lxml
