@@ -400,11 +400,102 @@ st.markdown("""
     color: #dcfce7;
     margin: 18px 0;
 }
+.summary-card {
+    background: linear-gradient(90deg, #f2fff8 0%, #ffffff 100%);
+    border: 1px solid #a7f3d0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 18px 0 24px 0;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+.summary-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.summary-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #22c55e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.summary-text {
+    color: #15803d;
+    font-weight: 700;
+    font-size: 15px;
+}
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.summary-item {
+    padding: 15px 22px;
+    border-right: 1px solid #e5e7eb;
+    min-width: 0;
+}
+.summary-item.no-border {
+    border-right: none;
+}
+.summary-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.summary-value {
+    font-size: 18px;
+    font-weight: 850;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.summary-green {
+    color: #16a34a;
+}
+.summary-blue {
+    color: #2563eb;
+}
+.summary-dark {
+    color: #0f172a;
+}
 .footer-app {
     text-align: center;
     color: #9ca3af;
     margin-top: 50px;
     font-size: 14px;
+}
+@media (max-width: 800px) {
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .summary-item:nth-child(2) {
+        border-right: none;
+    }
+    .summary-item:nth-child(1), .summary-item:nth-child(2) {
+        border-bottom: 1px solid #e5e7eb;
+    }
+}
+@media (max-width: 520px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+    .summary-item {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .summary-item.no-border {
+        border-bottom: none;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -412,7 +503,7 @@ st.markdown("""
 st.markdown("""
 <div class="hero">
     <h1>🧾 Validador de Facturas SRI</h1>
-    <p>Consulta comprobantes electrónicos autorizados por el SRI 🧐.</p>
+    <p>Consulta comprobantes electrónicos autorizados por el SRI y genera una vista limpia de la factura o nota de crédito.</p>
     <p class="creator">Creado por Kevin Muñoz A.</p>
 </div>
 """, unsafe_allow_html=True)
@@ -446,58 +537,35 @@ if st.button("🔍 Consultar comprobante", use_container_width=True):
 
                 nombre_base = f"{datos['tipo_comprobante'].replace(' ', '_')}_{datos['establecimiento']}-{datos['punto_emision']}-{datos['secuencial']}"
 
-numero = f"{datos['establecimiento']}-{datos['punto_emision']}-{datos['secuencial']}"
+                numero_comprobante = f"{datos['establecimiento']}-{datos['punto_emision']}-{datos['secuencial']}"
+                total_mostrar = datos["importe_total"] or "0.00"
 
-st.markdown(f"""
-<div style="
-background:linear-gradient(90deg,#f5fffb,#ffffff);
-border:1px solid #b7eacb;
-border-radius:12px;
-overflow:hidden;
-margin-top:15px;
-margin-bottom:25px;
-">
-
-<div style="
-padding:14px 20px;
-border-bottom:1px solid #e8ecef;
-display:flex;
-align-items:center;
-gap:10px;
-">
-
-<div style="
-width:26px;
-height:26px;
-background:#22c55e;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:14px;
-font-weight:bold;
-">
-✓
-</div>
-
-<div style="
-color:#15803d;
-font-size:15px;
-font-weight:600;
-">
-Comprobante autorizado y validado correctamente.
-</div>
-
-</div>
-
-<div style="
-display:grid;
-grid-template-columns:repeat(4,1fr);
-">
-
-<div style="padding:16px 22px;">
-<div style="font-size:
+                st.markdown(f"""
+                <div class="summary-card">
+                    <div class="summary-status">
+                        <div class="summary-icon">✓</div>
+                        <div class="summary-text">Comprobante autorizado y validado correctamente.</div>
+                    </div>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">Estado SRI</div>
+                            <div class="summary-value summary-green">{autorizacion["estado"]}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Tipo</div>
+                            <div class="summary-value summary-dark">{datos["tipo_comprobante"]}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">No.</div>
+                            <div class="summary-value summary-blue">{numero_comprobante}</div>
+                        </div>
+                        <div class="summary-item no-border">
+                            <div class="summary-label">Total</div>
+                            <div class="summary-value summary-green">${total_mostrar}</div>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
 
                 st.markdown("### Datos principales")
 
